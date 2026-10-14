@@ -47,19 +47,33 @@ technical-publisher-plugin/
 
 ### From a private git repo (recommended)
 
-Push this folder to your private repo, then in a Claude Code session:
+Push this folder to your private repo, then install it in a Claude Code session.
+
+**Why two commands?** Claude Code installs plugins from a *marketplace* — a catalog
+that lists one or more plugins — not from a bare repo. This repo already *is* a
+one-plugin marketplace (that is what `.claude-plugin/marketplace.json` declares). So
+you (1) register the catalog, then (2) install the plugin from it:
 
 ```
 /plugin marketplace add <owner>/<repo>
 /plugin install technical-publisher@technical-publisher-marketplace
 ```
 
-For a private GitHub repo, authenticate first (`gh auth login`, or an SSH remote).
-You can also point at an explicit git URL:
+- Replace `<owner>/<repo>` with YOUR repo — e.g. `ansraju/technical-publisher-plugin`
+  for GitHub, or a full URL for any host:
+  `/plugin marketplace add https://github.com/ansraju/technical-publisher-plugin.git`
+- The second command is fixed — do NOT change it. `technical-publisher` is the plugin
+  name and `technical-publisher-marketplace` is the catalog name; both come straight
+  from the JSON manifests in this repo. The `plugin@marketplace` form means "install
+  plugin `technical-publisher` from the catalog you just added."
 
-```
-/plugin marketplace add https://github.com/<owner>/<repo>.git
-```
+For a **private** repo, authenticate first (`gh auth login` for GitHub, or use an SSH
+remote like `git@github.com:ansraju/technical-publisher-plugin.git`) so Claude Code
+can clone it.
+
+After installing, run `/plugin` to confirm `technical-publisher` is listed and
+enabled, then **restart Claude Code** so it loads the five subagents. To pick up later
+updates you push to the repo, run `/plugin marketplace update technical-publisher-marketplace`.
 
 ### From a local folder (for testing before you push)
 
