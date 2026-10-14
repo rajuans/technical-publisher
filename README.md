@@ -51,7 +51,7 @@ technical-publisher-plugin/
 **1. Push this folder to your private repo.**
 
 ```bash
-git remote add origin git@github.com:ansraju/technical-publisher-plugin.git
+git remote add origin git@github.com:rajuans/technical-publisher-plugin.git
 git push -u origin master
 ```
 
@@ -62,12 +62,12 @@ use the SSH remote shown above.)
 first line; copy the second line exactly:
 
 ```
-/plugin marketplace add ansraju/technical-publisher-plugin
+/plugin marketplace add rajuans/technical-publisher-plugin
 /plugin install technical-publisher@technical-publisher-marketplace
 ```
 
 Use `owner/repo` for GitHub, or a full URL for any host (e.g.
-`/plugin marketplace add https://github.com/ansraju/technical-publisher-plugin.git`).
+`/plugin marketplace add https://github.com/rajuans/technical-publisher-plugin.git`).
 
 **3. Restart Claude Code** so it loads the five subagents. Run `/plugin` to confirm
 `technical-publisher` is listed and enabled.
