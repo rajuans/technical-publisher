@@ -46,36 +46,20 @@ technical-publisher-plugin/
 
 ## Install
 
-### To distribute it (install from a git repo)
-
-This plugin is published at
-[`github.com/rajuans/technical-publisher`](https://github.com/rajuans/technical-publisher).
-To install it, run these two commands in a Claude Code session — the first adds the
-repo as a marketplace, the second installs the plugin from it:
+Run these two commands in a Claude Code session:
 
 ```
 /plugin marketplace add rajuans/technical-publisher
 /plugin install technical-publisher@technical-publisher-marketplace
 ```
 
-Use `owner/repo` for GitHub, or a full URL for any host (e.g.
-`/plugin marketplace add https://github.com/rajuans/technical-publisher.git`).
-
 Then **restart Claude Code** so it loads the five subagents, and run `/plugin` to
-confirm `technical-publisher` is listed and enabled. To pull in later updates pushed to
-the repo, run `/plugin marketplace update technical-publisher-marketplace`.
+confirm `technical-publisher` is listed and enabled.
 
-To publish your own fork or future changes, push to your repo on the `main` branch:
-
-```bash
-git push origin main
-```
-
-> Why two commands? Claude Code installs plugins from a *marketplace* (a plugin
-> catalog), not from a bare repo — so the first command registers this repo as a
-> catalog and the second installs the plugin from it. The names in the second command
-> (`technical-publisher` and `technical-publisher-marketplace`) are fixed by this
-> repo's JSON manifests, which is why you copy it as-is.
+The first command registers the repo as a plugin marketplace; the second installs the
+plugin from it. Copy the second command exactly — its names come from this repo's
+manifests. To pull in later updates, run
+`/plugin marketplace update technical-publisher-marketplace`.
 
 ### To run it from a local clone
 
