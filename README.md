@@ -39,6 +39,7 @@ technical-publisher-plugin/
 │   ├── technical-reviewer.md
 │   ├── technical-editor.md
 │   └── technical-publisher-export.md
+├── CONTRIBUTING.md
 ├── LICENSE
 └── README.md
 ```
@@ -47,33 +48,38 @@ technical-publisher-plugin/
 
 ### From a private git repo (recommended)
 
-Push this folder to your private repo, then install it in a Claude Code session.
+**1. Push this folder to your private repo.**
 
-**Why two commands?** Claude Code installs plugins from a *marketplace* — a catalog
-that lists one or more plugins — not from a bare repo. This repo already *is* a
-one-plugin marketplace (that is what `.claude-plugin/marketplace.json` declares). So
-you (1) register the catalog, then (2) install the plugin from it:
+```bash
+git remote add origin git@github.com:ansraju/technical-publisher-plugin.git
+git push -u origin master
+```
+
+(Authenticate first so Claude Code can clone it later: `gh auth login` for GitHub, or
+use the SSH remote shown above.)
+
+**2. In a Claude Code session, run these two commands** — replace only the repo on the
+first line; copy the second line exactly:
 
 ```
-/plugin marketplace add <owner>/<repo>
+/plugin marketplace add ansraju/technical-publisher-plugin
 /plugin install technical-publisher@technical-publisher-marketplace
 ```
 
-- Replace `<owner>/<repo>` with YOUR repo — e.g. `ansraju/technical-publisher-plugin`
-  for GitHub, or a full URL for any host:
-  `/plugin marketplace add https://github.com/ansraju/technical-publisher-plugin.git`
-- The second command is fixed — do NOT change it. `technical-publisher` is the plugin
-  name and `technical-publisher-marketplace` is the catalog name; both come straight
-  from the JSON manifests in this repo. The `plugin@marketplace` form means "install
-  plugin `technical-publisher` from the catalog you just added."
+Use `owner/repo` for GitHub, or a full URL for any host (e.g.
+`/plugin marketplace add https://github.com/ansraju/technical-publisher-plugin.git`).
 
-For a **private** repo, authenticate first (`gh auth login` for GitHub, or use an SSH
-remote like `git@github.com:ansraju/technical-publisher-plugin.git`) so Claude Code
-can clone it.
+**3. Restart Claude Code** so it loads the five subagents. Run `/plugin` to confirm
+`technical-publisher` is listed and enabled.
 
-After installing, run `/plugin` to confirm `technical-publisher` is listed and
-enabled, then **restart Claude Code** so it loads the five subagents. To pick up later
-updates you push to the repo, run `/plugin marketplace update technical-publisher-marketplace`.
+To pull in later updates you push to the repo, run
+`/plugin marketplace update technical-publisher-marketplace`.
+
+> Why two commands? Claude Code installs plugins from a *marketplace* (a plugin
+> catalog), not from a bare repo — so the first command registers this repo as a
+> catalog and the second installs the plugin from it. The names in the second command
+> (`technical-publisher` and `technical-publisher-marketplace`) are fixed by this
+> repo's JSON manifests, which is why you copy it as-is.
 
 ### From a local folder (for testing before you push)
 
@@ -165,6 +171,12 @@ pandoc .agents/draft/final.md --from gfm --to docx -o final.docx
 Subagent `.md` files here do **not** pin a `model`, so each inherits the main
 Claude Code session's model. If you want a specific model per role (e.g. a cheaper
 model for reviewers), add a `model:` line to that agent's frontmatter.
+
+## Contributing
+
+Want to add a review axis, a new subagent, or an export format? See
+[`CONTRIBUTING.md`](CONTRIBUTING.md) for the structure, how to edit a subagent safely,
+and how to validate before you push.
 
 ## License
 
