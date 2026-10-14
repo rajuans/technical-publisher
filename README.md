@@ -3,7 +3,8 @@
 A Claude Code plugin that packages a **technical-writing agent team** as one
 installable unit. An orchestrator coordinates a writer, up to six parallel review
 axes, and an editor in a bounded **generate → review → revise → edit** loop that
-produces a single polished technical draft.
+produces a single polished technical draft, with an **optional export step** that
+renders a `.docx`, `.pdf`, or `.html` deliverable via pandoc.
 
 This is the Claude Code **plugin** equivalent of the AIM
 `technical-writer-orchestrator` agent-spec set. The procedure (the SOP content) is
@@ -12,14 +13,15 @@ self-contained — no external MCP SOP server is required.
 
 ## What it adds
 
-Four subagents (`agents/*.md`), loaded as subagents Claude can delegate to:
+Five subagents (`agents/*.md`), loaded as subagents Claude can delegate to:
 
 | Subagent | Role | Writes |
 |---|---|---|
-| `technical-publisher` | Owns the brief, style spec, and loop control; fans out review; decides when to stop. Delegates to the three below. | run log, merged worklist |
+| `technical-publisher` | Owns the brief, style spec, and loop control; fans out review; decides when to stop. Delegates to the four below. | run log, merged worklist |
 | `technical-writer` | Writes/revises the draft. Enforces ASD-STE100. No self-review. | `draft.md` |
 | `technical-reviewer` | Judges ONE axis; judgment-only, never edits the draft. One invocation per axis, run in parallel. | `findings/<axis>.json` |
 | `technical-editor` | Final line-level polish, runs once. | `final.md` |
+| `technical-publisher-export` | Optional. Converts `final.md` to `.docx`/`.pdf`/`.html` via pandoc. Format conversion only — never edits content. | `final.docx` etc. |
 
 Review axes (default six): `technical-accuracy`, `continuity`, `voice-consistency`,
 `narrative-pacing`, `inclusive-language`, `terminology-consistency`.
@@ -35,7 +37,8 @@ technical-publisher-plugin/
 │   ├── technical-publisher.md
 │   ├── technical-writer.md
 │   ├── technical-reviewer.md
-│   └── technical-editor.md
+│   ├── technical-editor.md
+│   └── technical-publisher-export.md
 ├── LICENSE
 └── README.md
 ```
@@ -78,7 +81,10 @@ Start a normal session and ask Claude to use the orchestrator:
 ```
 Use the technical-publisher agent to run the writing loop.
 Brief is at .agents/brief.md, style spec at .agents/style.md, max_iterations 3.
+Export the final result as docx.
 ```
+
+Drop the last line to keep the deliverable as Markdown only.
 
 Set up the inputs first in the directory you run from:
 
@@ -94,7 +100,40 @@ The orchestrator then: writes `.agents/draft/draft.md`, fans out one reviewer pe
 axis (each writing `.agents/review/findings/<axis>.json`), merges them into
 `.agents/review/worklist.json`, has the writer revise against the worklist, loops
 until clean or `max_iterations`, then runs the editor once to produce
-`.agents/draft/final.md`.
+`.agents/draft/final.md`. When you ask for a binary format, it then runs the export
+step to render `.agents/draft/final.docx` (and/or `.pdf`/`.html`).
+
+## Binary output (.docx / .pdf / .html)
+
+The pipeline is Markdown end to end — reviewable, diffable, git-friendly. Binary
+deliverables are produced by the `technical-publisher-export` subagent as a final
+conversion step; the content is never changed, only rendered.
+
+**Prerequisite: pandoc.** The export step shells out to [pandoc](https://pandoc.org),
+which must be on `PATH`. Install it once:
+
+```bash
+sudo yum install -y pandoc        # Amazon Linux / RHEL
+sudo apt-get install -y pandoc    # Debian / Ubuntu
+brew install pandoc               # macOS
+```
+
+`docx` and `html` need only pandoc. `pdf` additionally needs a LaTeX engine
+(`sudo yum install -y texlive`, or `brew install --cask basictex`). If pandoc is
+missing, the export agent stops and prints the install command rather than failing
+the run — the Markdown deliverable is still produced.
+
+**Request it** by naming the format(s) in your delegation prompt ("export as docx",
+"also give me a pdf and html"). The orchestrator passes `output_formats` to the
+export agent. To match a corporate Word template, point it at a reference doc: *"export
+as docx using .agents/template.docx as the reference doc"* (pandoc copies that file's
+styles).
+
+**Convert manually** at any time without the agent:
+
+```bash
+pandoc .agents/draft/final.md --from gfm --to docx -o final.docx
+```
 
 ## Design invariants
 

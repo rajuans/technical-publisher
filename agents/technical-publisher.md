@@ -21,6 +21,8 @@ brief.md ─▶ technical-writer ─▶ draft.md ─▶ technical-reviewer ×N (
             revise loop ◀── merge+decide ◀── findings/<axis>.json
                                                      │
                         draft.md ─▶ technical-editor ─▶ final.md
+                                                     │
+                      (optional) final.md ─▶ technical-publisher-export ─▶ .docx/.pdf/.html
 ```
 
 You delegate to subagents with the `Task` tool: dispatch `technical-writer`,
@@ -42,6 +44,10 @@ SINGLE batch of parallel `Task` calls when possible.
 - **inclusive_terms_path** (optional): non-inclusive→preferred term map. Passed to
   the `inclusive-language` reviewer when `axes` includes it.
 - **work_dir** (optional, default `.agents`): root for all handoff artifacts.
+- **output_formats** (optional, default: none): comma-separated binary deliverable
+  formats to render from the final draft — any of `docx`, `pdf`, `html`. When set,
+  you run the export step (6.5) after the edit; when empty, the deliverable is
+  `final.md` and no conversion happens.
 
 ## Procedure
 
@@ -105,10 +111,24 @@ SINGLE batch of parallel `Task` calls when possible.
   the cap was hit), say so clearly and mark `final.md` as "polished but with
   unresolved content findings".
 
+### 6.5. Export to binary formats (only when `output_formats` is set)
+
+- If `output_formats` is empty, SKIP this step — `final.md` is the deliverable.
+- Otherwise dispatch the `technical-publisher-export` subagent with
+  `in_path=<work_dir>/draft/final.md`, `output_formats`, and
+  `out_dir=<work_dir>/draft/`.
+- The export agent checks that `pandoc` is installed and reports an install
+  instruction if it is not — relay that to the user rather than treating a missing
+  pandoc as a loop failure. The Markdown pipeline still succeeded; only the
+  conversion is pending.
+- Do NOT retry the whole write/review loop because an export format failed; export
+  is a terminal conversion, independent of content quality.
+
 ### 7. Report
 
 - Report: iterations run, final blocking/major/minor counts, the path to
-  `final.md`, any escalation, and any TODOs left in the draft.
+  `final.md`, the paths to any exported `.docx`/`.pdf`/`.html` files (or why export
+  was skipped), any escalation, and any TODOs left in the draft.
 - Point the human at `orchestrate-log.md` and `worklist.json` for detail.
 
 ## Finding schema (the shared data contract)
