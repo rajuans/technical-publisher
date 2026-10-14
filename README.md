@@ -77,16 +77,18 @@ git push origin main
 > (`technical-publisher` and `technical-publisher-marketplace`) are fixed by this
 > repo's JSON manifests, which is why you copy it as-is.
 
-### To use it locally (no repo)
+### To run it from a local clone
+
+Clone the repo and point Claude Code at the folder — no marketplace needed:
 
 ```
-claude --plugin-dir /local/home/ansraju/.kiro/crew/workspace/technical-publisher-plugin
+claude --plugin-dir ./technical-publisher
 ```
 
-Validate the manifest at any time:
+Validate the manifest at any time (run from the repo root):
 
 ```
-claude plugin validate /local/home/ansraju/.kiro/crew/workspace/technical-publisher-plugin
+claude plugin validate .
 ```
 
 ## Use

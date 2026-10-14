@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "description": "A technical-writing agent team: an orchestrator coordinates a writer, up to six parallel review axes, an editor, and an optional pandoc export step in a bounded generate-review-revise loop that produces a single polished technical draft and, on request, a .docx/.pdf/.html deliverable. Enforces ASD-STE100 (Simplified Technical English), tested-examples, inclusive-language, and terminology-consistency.",
   "author": {
-    "name": "ansraju"
+    "name": "rajuans"
   },
   "keywords": [
     "technical-writing",

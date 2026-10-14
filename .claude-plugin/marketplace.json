@@ -2,7 +2,7 @@
   "name": "technical-publisher-marketplace",
   "description": "A technical-writing agent team for Claude Code: orchestrator, writer, six review axes, and an editor in a bounded write-review-edit loop.",
   "owner": {
-    "name": "ansraju"
+    "name": "rajuans"
   },
   "plugins": [
     {
