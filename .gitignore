@@ -1,0 +1,10 @@
+# Agent run artifacts (produced when the orchestrator runs)
+.agents/
+
+# OS / editor cruft
+.DS_Store
+*.swp
+*~
+
+# Local Claude Code state
+.claude/

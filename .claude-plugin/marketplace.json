@@ -1,0 +1,14 @@
+{
+  "name": "technical-writer-orchestrator-marketplace",
+  "description": "A technical-writing agent team for Claude Code: orchestrator, writer, six review axes, and an editor in a bounded write-review-edit loop.",
+  "owner": {
+    "name": "ansraju"
+  },
+  "plugins": [
+    {
+      "name": "technical-writer-orchestrator",
+      "source": "./",
+      "description": "Technical-writing agent team: orchestrator + writer + reviewer (6 axes) + editor, in a bounded write-review-edit loop. Enforces ASD-STE100, tested-examples, inclusive-language, and terminology-consistency."
+    }
+  ]
+}
