@@ -48,29 +48,28 @@ technical-publisher-plugin/
 
 ### To distribute it (install from a git repo)
 
-**1. Push this folder to a git repo.**
-
-```bash
-git remote add origin git@github.com:rajuans/technical-publisher-plugin.git
-git push -u origin master
-```
-
-**2. In a Claude Code session, run these two commands** — replace only the repo on the
-first line; copy the second line exactly:
+This plugin is published at
+[`github.com/rajuans/technical-publisher`](https://github.com/rajuans/technical-publisher).
+To install it, run these two commands in a Claude Code session — the first adds the
+repo as a marketplace, the second installs the plugin from it:
 
 ```
-/plugin marketplace add rajuans/technical-publisher-plugin
+/plugin marketplace add rajuans/technical-publisher
 /plugin install technical-publisher@technical-publisher-marketplace
 ```
 
 Use `owner/repo` for GitHub, or a full URL for any host (e.g.
-`/plugin marketplace add https://github.com/rajuans/technical-publisher-plugin.git`).
+`/plugin marketplace add https://github.com/rajuans/technical-publisher.git`).
 
-**3. Restart Claude Code** so it loads the five subagents. Run `/plugin` to confirm
-`technical-publisher` is listed and enabled.
+Then **restart Claude Code** so it loads the five subagents, and run `/plugin` to
+confirm `technical-publisher` is listed and enabled. To pull in later updates pushed to
+the repo, run `/plugin marketplace update technical-publisher-marketplace`.
 
-To pull in later updates you push to the repo, run
-`/plugin marketplace update technical-publisher-marketplace`.
+To publish your own fork or future changes, push to your repo on the `main` branch:
+
+```bash
+git push origin main
+```
 
 > Why two commands? Claude Code installs plugins from a *marketplace* (a plugin
 > catalog), not from a bare repo — so the first command registers this repo as a
