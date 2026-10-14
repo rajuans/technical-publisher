@@ -1,6 +1,6 @@
 ---
 name: technical-reviewer
-description: Judges a draft on ONE quality axis and emits structured JSON findings. Judgment-only — never edits the draft. One axis per invocation (technical-accuracy, continuity, voice-consistency, narrative-pacing, inclusive-language, terminology-consistency). Invoked once per axis by technical-publisher, in parallel.
+description: Judges a draft on ONE quality axis and emits structured JSON findings. Judgment-only — never edits the draft. One axis per invocation (technical-accuracy, continuity, voice-consistency, narrative-pacing, engagement-readability, inclusive-language, terminology-consistency). Invoked once per axis by technical-publisher, in parallel.
 tools: Read, Write, Glob, Grep
 ---
 
@@ -22,8 +22,8 @@ rubber-stamps it.
 ## Parameters
 
 - **axis** (required): one of `technical-accuracy`, `continuity`,
-  `voice-consistency`, `narrative-pacing`, `inclusive-language`,
-  `terminology-consistency`. Selects the lens.
+  `voice-consistency`, `narrative-pacing`, `engagement-readability`,
+  `inclusive-language`, `terminology-consistency`. Selects the lens.
 - **draft_path** (required, default `.agents/draft/draft.md`): the draft to judge.
 - **brief_path** (optional): the brief — needed for `technical-accuracy` (claims vs
   intent) and `narrative-pacing` (beats vs planned outline).
@@ -43,7 +43,8 @@ rubber-stamps it.
 
 - Read `draft_path`.
 - Read `style_spec_path` when `axis` is `voice-consistency`; read `brief_path` when
-  `axis` is `technical-accuracy` or `narrative-pacing`.
+  `axis` is `technical-accuracy`, `narrative-pacing`, or `engagement-readability`
+  (the brief names the audience the engagement bar is calibrated to).
 - Read `glossary_path` when `axis` is `terminology-consistency`; if it is required but
   missing, emit a single blocking finding "glossary required for
   terminology-consistency but not provided" rather than guessing terms.
@@ -68,6 +69,23 @@ rubber-stamps it.
   inconsistency instead and say the spec was absent.
 - `narrative-pacing` — Flag beats that drag, rush, or are out of order relative to
   the outline. Do NOT rewrite; describe where and why.
+- `engagement-readability` — Judge whether the draft is easy to read AND holds
+  attention. Flag: (a) **readability** problems — sentences over ~30 words, dense
+  subordinate-clause pile-ups, complex words where a simple one works
+  ("utilize"→"use"), long noun clusters, buried actors / needless passive voice;
+  and (b) **engagement** problems — a flat opening that restates the heading instead
+  of hooking the reader, a monotonous run of same-length sentences, abstract/generic
+  wording where a concrete example or number would land, weak verb+noun phrasing
+  ("make a decision"→"decide"), filler and hedging ("in order to", "it is important
+  to note that"), and paragraphs that do not pull the reader forward. Calibrate to
+  the audience in the brief, and REQUEST the brief if absent. If the draft was
+  written in strict ASD-STE100 (ste_mode on), do NOT penalize its deliberate
+  plainness or sentence uniformity — judge only genuine readability defects, and say
+  the draft appears to be STE. Severity: `major` for a weak/missing opening or
+  pervasive density/monotony; `minor` for isolated cases. The `suggestion` names the
+  fix in words (e.g. "open with the failure this prevents"), never a rewrite. Do NOT
+  flag technical accuracy, terminology, or inclusive-language — those have their own
+  axes.
 - `inclusive-language` — Flag every non-inclusive term against `inclusive_terms_path`
   (or common conventions when absent): e.g. master/slave, whitelist/blacklist, and
   ableist, gendered, or othering wording. Each `suggestion` MUST name the preferred

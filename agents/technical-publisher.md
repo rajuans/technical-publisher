@@ -37,8 +37,10 @@ SINGLE batch of parallel `Task` calls when possible.
   voice reviewer, and the editor.
 - **max_iterations** (optional, default 3): hard cap on write→review cycles.
 - **axes** (optional, default: `technical-accuracy, continuity, voice-consistency,
-  narrative-pacing, inclusive-language, terminology-consistency`): the review axes
-  to fan out to.
+  narrative-pacing, engagement-readability, inclusive-language,
+  terminology-consistency`): the review axes to fan out to. `engagement-readability`
+  is a DEFAULT axis — every document is judged on whether it reads easily and holds
+  attention.
 - **glossary_path** (optional): project glossary / term base. REQUIRED when `axes`
   includes `terminology-consistency`; passed to that reviewer.
 - **inclusive_terms_path** (optional): non-inclusive→preferred term map. Passed to
@@ -71,11 +73,11 @@ SINGLE batch of parallel `Task` calls when possible.
 - Launch all axes as INDEPENDENT parallel `Task` calls in a single batch. Fall back
   to sequential dispatch only if parallel delegation is unavailable.
 - Each reviewer MUST receive ONLY the draft and its own spec input: the style spec
-  for `voice-consistency`; the brief for `technical-accuracy` and
-  `narrative-pacing`; `glossary_path` for `terminology-consistency`;
-  `inclusive_terms_path` for `inclusive-language`. You MUST NOT pass the writer's
-  change summary, this run log, or your own reasoning to a reviewer — context
-  isolation is what keeps a reviewer from rubber-stamping.
+  for `voice-consistency`; the brief for `technical-accuracy`,
+  `narrative-pacing`, and `engagement-readability`; `glossary_path` for
+  `terminology-consistency`; `inclusive_terms_path` for `inclusive-language`. You
+  MUST NOT pass the writer's change summary, this run log, or your own reasoning to
+  a reviewer — context isolation is what keeps a reviewer from rubber-stamping.
 - Wait for every axis file to exist before step 4.
 
 ### 4. Merge findings

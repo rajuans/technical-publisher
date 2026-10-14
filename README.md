@@ -18,13 +18,15 @@ Five subagents (`agents/*.md`), loaded as subagents Claude can delegate to:
 | Subagent | Role | Writes |
 |---|---|---|
 | `technical-publisher` | Owns the brief, style spec, and loop control; fans out review; decides when to stop. Delegates to the four below. | run log, merged worklist |
-| `technical-writer` | Writes/revises the draft. Enforces ASD-STE100. No self-review. | `draft.md` |
+| `technical-writer` | Writes/revises the draft — engaging, readable prose under an always-on plain-language floor; strict ASD-STE100 is opt-in. No self-review. | `draft.md` |
 | `technical-reviewer` | Judges ONE axis; judgment-only, never edits the draft. One invocation per axis, run in parallel. | `findings/<axis>.json` |
 | `technical-editor` | Final line-level polish, runs once. | `final.md` |
 | `technical-publisher-export` | Optional. Converts `final.md` to `.docx`/`.pdf`/`.html` via pandoc. Format conversion only — never edits content. | `final.docx` etc. |
 
-Review axes (default six): `technical-accuracy`, `continuity`, `voice-consistency`,
-`narrative-pacing`, `inclusive-language`, `terminology-consistency`.
+Review axes (default seven): `technical-accuracy`, `continuity`,
+`voice-consistency`, `narrative-pacing`, `engagement-readability`,
+`inclusive-language`, `terminology-consistency`. Every document is judged on
+`engagement-readability` — whether it reads easily and holds attention.
 
 ## Layout
 
