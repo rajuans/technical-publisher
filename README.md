@@ -46,17 +46,14 @@ technical-publisher-plugin/
 
 ## Install
 
-### From a private git repo (recommended)
+### To distribute it (install from a git repo)
 
-**1. Push this folder to your private repo.**
+**1. Push this folder to a git repo.**
 
 ```bash
 git remote add origin git@github.com:rajuans/technical-publisher-plugin.git
 git push -u origin master
 ```
-
-(Authenticate first so Claude Code can clone it later: `gh auth login` for GitHub, or
-use the SSH remote shown above.)
 
 **2. In a Claude Code session, run these two commands** — replace only the repo on the
 first line; copy the second line exactly:
@@ -81,7 +78,7 @@ To pull in later updates you push to the repo, run
 > (`technical-publisher` and `technical-publisher-marketplace`) are fixed by this
 > repo's JSON manifests, which is why you copy it as-is.
 
-### From a local folder (for testing before you push)
+### To use it locally (no repo)
 
 ```
 claude --plugin-dir /local/home/ansraju/.kiro/crew/workspace/technical-publisher-plugin
