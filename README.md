@@ -1,4 +1,4 @@
-# Technical Writer Orchestrator (Claude Code plugin)
+# Technical Publisher (Claude Code plugin)
 
 A Claude Code plugin that packages a **technical-writing agent team** as one
 installable unit. An orchestrator coordinates a writer, up to six parallel review
@@ -16,7 +16,7 @@ Four subagents (`agents/*.md`), loaded as subagents Claude can delegate to:
 
 | Subagent | Role | Writes |
 |---|---|---|
-| `technical-writer-orchestrator` | Owns the brief, style spec, and loop control; fans out review; decides when to stop. Delegates to the three below. | run log, merged worklist |
+| `technical-publisher` | Owns the brief, style spec, and loop control; fans out review; decides when to stop. Delegates to the three below. | run log, merged worklist |
 | `technical-writer` | Writes/revises the draft. Enforces ASD-STE100. No self-review. | `draft.md` |
 | `technical-reviewer` | Judges ONE axis; judgment-only, never edits the draft. One invocation per axis, run in parallel. | `findings/<axis>.json` |
 | `technical-editor` | Final line-level polish, runs once. | `final.md` |
@@ -27,12 +27,12 @@ Review axes (default six): `technical-accuracy`, `continuity`, `voice-consistenc
 ## Layout
 
 ```
-technical-writer-orchestrator-plugin/
+technical-publisher-plugin/
 ├── .claude-plugin/
 │   ├── plugin.json          # plugin manifest (name, version, agents)
 │   └── marketplace.json     # marketplace entry (install this repo as a marketplace)
 ├── agents/
-│   ├── technical-writer-orchestrator.md
+│   ├── technical-publisher.md
 │   ├── technical-writer.md
 │   ├── technical-reviewer.md
 │   └── technical-editor.md
@@ -48,7 +48,7 @@ Push this folder to your private repo, then in a Claude Code session:
 
 ```
 /plugin marketplace add <owner>/<repo>
-/plugin install technical-writer-orchestrator@technical-writer-orchestrator-marketplace
+/plugin install technical-publisher@technical-publisher-marketplace
 ```
 
 For a private GitHub repo, authenticate first (`gh auth login`, or an SSH remote).
@@ -61,13 +61,13 @@ You can also point at an explicit git URL:
 ### From a local folder (for testing before you push)
 
 ```
-claude --plugin-dir /local/home/ansraju/.kiro/crew/workspace/technical-writer-orchestrator-plugin
+claude --plugin-dir /local/home/ansraju/.kiro/crew/workspace/technical-publisher-plugin
 ```
 
 Validate the manifest at any time:
 
 ```
-claude plugin validate /local/home/ansraju/.kiro/crew/workspace/technical-writer-orchestrator-plugin
+claude plugin validate /local/home/ansraju/.kiro/crew/workspace/technical-publisher-plugin
 ```
 
 ## Use
@@ -76,7 +76,7 @@ You do not "launch into" the orchestrator — Claude Code subagents are delegate
 Start a normal session and ask Claude to use the orchestrator:
 
 ```
-Use the technical-writer-orchestrator agent to run the writing loop.
+Use the technical-publisher agent to run the writing loop.
 Brief is at .agents/brief.md, style spec at .agents/style.md, max_iterations 3.
 ```
 

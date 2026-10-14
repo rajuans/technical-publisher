@@ -1,6 +1,6 @@
 ---
 name: technical-reviewer
-description: Judges a draft on ONE quality axis and emits structured JSON findings. Judgment-only — never edits the draft. One axis per invocation (technical-accuracy, continuity, voice-consistency, narrative-pacing, inclusive-language, terminology-consistency). Invoked once per axis by technical-writer-orchestrator, in parallel.
+description: Judges a draft on ONE quality axis and emits structured JSON findings. Judgment-only — never edits the draft. One axis per invocation (technical-accuracy, continuity, voice-consistency, narrative-pacing, inclusive-language, terminology-consistency). Invoked once per axis by technical-publisher, in parallel.
 tools: Read, Write, Glob, Grep
 ---
 

@@ -1,6 +1,6 @@
 ---
 name: technical-writer
-description: Writes or revises a single prose draft from a brief, and on later passes from a merged review worklist. Enforces ASD-STE100 (Simplified Technical English). Performs no self-review and emits no findings. Invoked by technical-writer-orchestrator, or standalone for a first draft.
+description: Writes or revises a single prose draft from a brief, and on later passes from a merged review worklist. Enforces ASD-STE100 (Simplified Technical English). Performs no self-review and emits no findings. Invoked by technical-publisher, or standalone for a first draft.
 tools: Read, Write, Edit, Glob, Grep
 ---
 

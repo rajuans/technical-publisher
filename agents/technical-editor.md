@@ -1,6 +1,6 @@
 ---
 name: technical-editor
-description: Performs the final line-level polish on a draft that has already passed content review. Fixes grammar, clarity, concision, and flow without changing meaning, structure, or voice. Runs once, at the end. Invoked by technical-writer-orchestrator after the write-review loop resolves.
+description: Performs the final line-level polish on a draft that has already passed content review. Fixes grammar, clarity, concision, and flow without changing meaning, structure, or voice. Runs once, at the end. Invoked by technical-publisher after the write-review loop resolves.
 tools: Read, Write, Edit, Glob, Grep
 ---
 

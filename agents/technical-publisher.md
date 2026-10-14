@@ -1,5 +1,5 @@
 ---
-name: technical-writer-orchestrator
+name: technical-publisher
 description: Use PROACTIVELY when the user wants to author or substantially revise a technical document, book chapter, guide, or spec through a managed write-review-edit loop. Owns the brief, style spec, and loop control; delegates writing to technical-writer, review to technical-reviewer (one per axis, in parallel), and final polish to technical-editor. Produces a single polished draft.
 tools: Read, Write, Edit, Glob, Grep, Bash, Task, WebFetch, WebSearch
 ---

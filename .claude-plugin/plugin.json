@@ -1,6 +1,6 @@
 {
-  "name": "technical-writer-orchestrator",
-  "displayName": "Technical Writer Orchestrator",
+  "name": "technical-publisher",
+  "displayName": "Technical Publisher",
   "version": "1.0.0",
   "description": "A technical-writing agent team: an orchestrator coordinates a writer, up to six parallel review axes, and an editor in a bounded generate-review-revise loop that produces a single polished technical draft. Enforces ASD-STE100 (Simplified Technical English), tested-examples, inclusive-language, and terminology-consistency.",
   "author": {
@@ -17,7 +17,7 @@
   ],
   "license": "MIT",
   "agents": [
-    "./agents/technical-writer-orchestrator.md",
+    "./agents/technical-publisher.md",
     "./agents/technical-writer.md",
     "./agents/technical-reviewer.md",
     "./agents/technical-editor.md"
