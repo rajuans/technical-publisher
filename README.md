@@ -23,10 +23,12 @@ Five subagents (`agents/*.md`), loaded as subagents Claude can delegate to:
 | `technical-editor` | Final line-level polish, runs once. | `final.md` |
 | `technical-publisher-export` | Optional. Converts `final.md` to `.docx`/`.pdf`/`.html` via pandoc. Format conversion only — never edits content. | `final.docx` etc. |
 
-Review axes (default seven): `technical-accuracy`, `continuity`,
-`voice-consistency`, `narrative-pacing`, `engagement-readability`,
-`inclusive-language`, `terminology-consistency`. Every document is judged on
-`engagement-readability` — whether it reads easily and holds attention.
+Review axes (default eight): `technical-accuracy`, `continuity`,
+`voice-consistency`, `narrative-pacing`, `engagement-readability`, `ai-tells`,
+`inclusive-language`, `terminology-consistency`. Every document is judged on both
+`engagement-readability` — whether it reads easily and holds attention — and
+`ai-tells` — whether it reads as machine-written (uniform sentence length,
+AI-vocabulary crutches, no-stance tone).
 
 ## Layout
 

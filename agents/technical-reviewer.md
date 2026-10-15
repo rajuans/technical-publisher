@@ -1,6 +1,6 @@
 ---
 name: technical-reviewer
-description: Judges a draft on ONE quality axis and emits structured JSON findings. Judgment-only — never edits the draft. One axis per invocation (technical-accuracy, continuity, voice-consistency, narrative-pacing, engagement-readability, inclusive-language, terminology-consistency). Invoked once per axis by technical-publisher, in parallel.
+description: Judges a draft on ONE quality axis and emits structured JSON findings. Judgment-only — never edits the draft. One axis per invocation (technical-accuracy, continuity, voice-consistency, narrative-pacing, engagement-readability, ai-tells, inclusive-language, terminology-consistency). Invoked once per axis by technical-publisher, in parallel.
 tools: Read, Write, Glob, Grep
 ---
 
@@ -22,7 +22,7 @@ rubber-stamps it.
 ## Parameters
 
 - **axis** (required): one of `technical-accuracy`, `continuity`,
-  `voice-consistency`, `narrative-pacing`, `engagement-readability`,
+  `voice-consistency`, `narrative-pacing`, `engagement-readability`, `ai-tells`,
   `inclusive-language`, `terminology-consistency`. Selects the lens.
 - **draft_path** (required, default `.agents/draft/draft.md`): the draft to judge.
 - **brief_path** (optional): the brief — needed for `technical-accuracy` (claims vs
@@ -42,9 +42,10 @@ rubber-stamps it.
 ### 1. Load scope — read ONLY what this axis needs
 
 - Read `draft_path`.
-- Read `style_spec_path` when `axis` is `voice-consistency`; read `brief_path` when
-  `axis` is `technical-accuracy`, `narrative-pacing`, or `engagement-readability`
-  (the brief names the audience the engagement bar is calibrated to).
+- Read `style_spec_path` when `axis` is `voice-consistency` or `ai-tells` (the spec's
+  register decides whether controlled imperfection is allowed); read `brief_path` when
+  `axis` is `technical-accuracy`, `narrative-pacing`, `engagement-readability`, or
+  `ai-tells` (the brief names the audience and whether a stance is wanted).
 - Read `glossary_path` when `axis` is `terminology-consistency`; if it is required but
   missing, emit a single blocking finding "glossary required for
   terminology-consistency but not provided" rather than guessing terms.
@@ -86,6 +87,28 @@ rubber-stamps it.
   fix in words (e.g. "open with the failure this prevents"), never a rewrite. Do NOT
   flag technical accuracy, terminology, or inclusive-language — those have their own
   axes.
+- `ai-tells` — Judge whether the draft reads as machine-written and flag the specific
+  signals, so the writer can revise toward genuinely human prose. This axis is close
+  to `engagement-readability` but asks a different question: not "is this good?" but
+  "does this pattern-match an LLM?" Flag: (a) **uniform sentence length** — long runs
+  of same-length sentences with no burstiness (the strongest tell); (b) **AI-vocabulary
+  tells** — reflexive or out-of-place use of *delve, tapestry, pivotal, harness,
+  illuminate, testament, landscape, underscore, realm, intricate, seamless, robust,
+  leverage, foster, myriad*, etc.; (c) **hedging/filler transitions** — *moreover,
+  furthermore, additionally, that said, it is important to note, it is worth noting, in
+  order to, when it comes to, on the other hand*; (d) **formulaic openers/closers** —
+  *In today's world…, In the realm of…, In conclusion…, In summary…*, or a
+  dictionary-definition opening; (e) **no-stance, diplomatic tone** — every option
+  presented as equally valid, no recommendation, no point of view, where the brief
+  allows one; (f) **low information density / padding** — three words doing one word's
+  work. This is a SMELL list: flag reflexive, repeated, or out-of-place use, NOT every
+  single instance (a word is legitimate when it is the precise term, e.g. "landscape"
+  in a geography doc). The `suggestion` names the fix in words ("cut the hedge; state
+  it directly", "vary these five same-length sentences", "take a position on X"), never
+  a rewrite. Severity: `major` for a pervasive pattern (uniform rhythm throughout, a
+  no-stance whole section), `minor` for isolated instances. Do NOT penalize deliberate
+  STE plainness (ste_mode on) — in STE, uniform short sentences are the point. Do NOT
+  flag technical accuracy, terminology, or inclusive-language.
 - `inclusive-language` — Flag every non-inclusive term against `inclusive_terms_path`
   (or common conventions when absent): e.g. master/slave, whitelist/blacklist, and
   ableist, gendered, or othering wording. Each `suggestion` MUST name the preferred
